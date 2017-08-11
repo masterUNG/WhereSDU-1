@@ -6,6 +6,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -21,12 +22,63 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class ServiceActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private double latADouble = 0, lngADouble = 0;
     private LocationManager locationManager;
     private Criteria criteria;
+    private int secAnInt = 1000; // ==> 1 sec
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            String tag = "11AugV2";
+            int intMarker = R.mipmap.ic_marker_friend;
+            String idUser = getIntent().getStringExtra("ID");
+            int intIDUser = Integer.parseInt(idUser);
+
+            try {
+
+                GetAllUser getAllUser = new GetAllUser(ServiceActivity.this);
+                getAllUser.execute();
+                String strJSON = getAllUser.get();
+
+                JSONArray jsonArray = new JSONArray(strJSON);
+                String[] strID = new String[jsonArray.length()];
+                String[] strName = new String[jsonArray.length()];
+                String[] strLat = new String[jsonArray.length()];
+                String[] strLng = new String[jsonArray.length()];
+
+                for (int i=0; i<jsonArray.length(); i+=1) {
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    strID[i] = jsonObject.getString("id");
+                    strName[i] = jsonObject.getString("Name");
+                    strLat[i] = jsonObject.getString("Lat");
+                    strLng[i] = jsonObject.getString("Lng");
+
+                    if (Integer.parseInt(strID[i]) == intIDUser) {
+                        intMarker = R.mipmap.ic_marker_user;
+                    } else {
+                        intMarker = R.mipmap.ic_marker_friend;
+                    }
+
+
+
+                }   // for
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }   // try
+            handler.postDelayed(runnable, secAnInt);
+        }   // run
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +251,7 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
                     strURL);
             String result = editLatLng.get();
             Log.d("11AugV1", "result ==> " + result);
+
 
 
         } catch (Exception e) {
