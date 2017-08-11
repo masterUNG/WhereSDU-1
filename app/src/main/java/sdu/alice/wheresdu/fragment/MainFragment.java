@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import sdu.alice.wheresdu.GetAllUser;
 import sdu.alice.wheresdu.MyAlert;
 import sdu.alice.wheresdu.R;
+import sdu.alice.wheresdu.ServiceActivity;
 
 /**
  * Created by aom on 6/7/2560.
@@ -130,6 +131,11 @@ public class MainFragment extends Fragment {
             } else if (strPassword.equals(strPasswordTrue)) {
                 //Password True
                 Toast.makeText(getActivity(), "Welcome " + strName, Toast.LENGTH_SHORT).show();
+
+                //Intent To Service
+                Intent intent = new Intent(getActivity(), ServiceActivity.class);
+                intent.putExtra("ID", strID);
+                getActivity().startActivity(intent);
 
             } else {
                 //Password False
