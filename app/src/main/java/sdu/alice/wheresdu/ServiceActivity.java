@@ -169,14 +169,43 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
 
         //Check lat,lng != 0
+        createMapAnEditLatLng();
+
+
+    }   // onMapReady
+
+    private void createMapAnEditLatLng() {
+
+        //Create Map
         while (latADouble == 0) {
             myGetLocation();
         }   // while
 
         LatLng latLng = new LatLng(latADouble, lngADouble);
-       mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+        //Edit LatLng
+
+        String strID = getIntent().getStringExtra("ID");
+        MyConstant myConstant = new MyConstant();
+        String strURL = myConstant.getUrlEditLatLng();
+
+        try {
+
+            EditLatLng editLatLng = new EditLatLng(ServiceActivity.this);
+            editLatLng.execute(strID,
+                    Double.toString(latADouble),
+                    Double.toString(lngADouble),
+                    strURL);
+            String result = editLatLng.get();
+            Log.d("11AugV1", "result ==> " + result);
 
 
-    }   // onMapReady
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }   // createMap
 
 }   // Main Class
