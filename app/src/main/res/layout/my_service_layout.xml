@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--ToolBar-->
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Title-->
+            <TextView
+                android:id="@+id/txtTitle"
+                android:textStyle="bold"
+                android:text="Title"
+                android:layout_centerInParent="true"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/h1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--Icon-->
+            <ImageView
+                android:id="@+id/imvOff"
+                android:src="@mipmap/ic_off"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <!--Map-->
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="sdu.alice.wheresdu.ServiceActivity" />
+
+
+</LinearLayout>
