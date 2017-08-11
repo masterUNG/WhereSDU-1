@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,7 +65,7 @@ public class MainFragment extends Fragment {
 
         //Initial View
         userEditText = (EditText) getView().findViewById(R.id.edtUser);
-        passwordEditText = (EditText) getView().findViewById(R.id.edtUser);
+        passwordEditText = (EditText) getView().findViewById(R.id.edtPassword);
         Button button = (Button) getView().findViewById(R.id.btnLogin);
 
         //Check Space
@@ -102,14 +103,40 @@ public class MainFragment extends Fragment {
 
             String strJSON = getAllUser.get();  //ดึงข้อมูลเจอสันออกมาเป็น String ยาวๆ เรียงต่อกัน
             Log.d(tag, "JSON ==> " + strJSON);
+            boolean status = true; // true ==> User False
+            String strID = null;
+            String strName = null;
+            String strPasswordTrue = null;
 
             JSONArray jsonArray = new JSONArray(strJSON);
 
             for (int i=0; i<jsonArray.length(); i+=1) {
 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (strUser.equals(jsonObject.getString("User"))) {
+                    status = false; // User ==> True
+                    strID = jsonObject.getString("id");
+                    strName = jsonObject.getString("Name");
+                    strPasswordTrue = jsonObject.getString("Password");
+                }   // if
 
             } //For
+
+
+            if (status) {
+                //User False
+                MyAlert myAlert = new MyAlert(getActivity());
+                myAlert.myDialog("User False", "No this User in my Database");
+            } else if (strPassword.equals(strPasswordTrue)) {
+                //Password True
+                Toast.makeText(getActivity(), "Welcome " + strName, Toast.LENGTH_SHORT).show();
+
+            } else {
+                //Password False
+                MyAlert myAlert = new MyAlert(getActivity());
+                myAlert.myDialog("Password False", "Please Try Again Password False");
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
